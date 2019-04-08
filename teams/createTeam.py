@@ -3,28 +3,32 @@ import logging
 import os
 import time
 import uuid
+import random
 
 import boto3
 dynamodb = boto3.resource('dynamodb')
 
+keys = ['name', 'members']
 
-def create(event, context):
+def validateReq(data, keys):
+    for item in keys:
+        if item not in data:
+            logging.error("Validation Failed")
+            raise Exception("Couldn't create the team, no %s." % item)
+            return
+
+
+def createTeam(event, context):
     data = json.loads(event['body'])
-    if 'text' not in data:
-        logging.error("Validation Failed")
-        raise Exception("Couldn't create the todo item.")
-        return
+    validateReq(data, keys)
 
-    timestamp = int(time.time() * 1000)
 
     table = dynamodb.Table(os.environ['DYNAMODB_TABLE'])
 
     item = {
-        'id': str(uuid.uuid1()),
-        'text': data['text'],
-        'checked': False,
-        'createdAt': timestamp,
-        'updatedAt': timestamp,
+        'id': str(random.randint(1, 100)),
+        'name': data['name'],
+        'members': data['members']
     }
 
     # write the todo to the database
