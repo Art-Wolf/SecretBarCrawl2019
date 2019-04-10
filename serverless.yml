@@ -38,6 +38,14 @@ functions:
           method: put
           cors: true
 
+  listBar:
+    handler: bars/list.bar
+    events:
+      - http:
+          path: bars
+          method: get
+          cors: true
+
   createBar:
     handler: bars/create.bar
     events:
