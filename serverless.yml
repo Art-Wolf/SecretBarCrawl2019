@@ -38,6 +38,14 @@ functions:
           method: put
           cors: true
 
+  listTeams:
+    handler: teams/get.teams
+    events: 
+      - http:
+          path: teams
+          method: get
+          cors: true
+
   createBar:
     handler: bars/create.bar
     events:
@@ -58,7 +66,7 @@ resources:
   Resources:
     TodosDynamoDbTable:
       Type: 'AWS::DynamoDB::Table'
-      DeletionPolicy: Retain
+      DeletionPolicy: Delete
       Properties:
         AttributeDefinitions:
           -
