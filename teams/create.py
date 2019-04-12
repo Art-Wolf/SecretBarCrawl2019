@@ -14,11 +14,11 @@ def validateReq(data, keys):
     for item in keys:
         if item not in data:
             logging.error("Validation Failed")
-            raise Exception("Couldn't create the team, no %s." % item)
+            raise Exception("Couldn't create the team, no %s." %item)
             return
 
 
-def createTeam(event, context):
+def team(event, context):
     data = json.loads(event['body'])
     validateReq(data, keys)
 
