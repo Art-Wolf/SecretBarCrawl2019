@@ -7,7 +7,7 @@ import boto3
 dynamodb = boto3.resource('dynamodb')
 
 
-def updateTeam(event, context):
+def team(event, context):
     data = json.loads(event['body'])
     if 'members' not in data:
         logging.error("Validation Failed")
