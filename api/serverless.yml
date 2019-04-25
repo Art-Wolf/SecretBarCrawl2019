@@ -1,4 +1,4 @@
-service: serverless-rest-api-with-dynamodb
+service: secret-bar-crawl-api
 
 frameworkVersion: ">=1.1.0 <2.0.0"
 
@@ -6,7 +6,7 @@ provider:
   name: aws
   runtime: python2.7
   environment:
-    DYNAMODB_TABLE: ${self:service}-${opt:stage, self:provider.stage}
+    DYNAMODB_TEAM_TABLE: ${self:service}-teams-${opt:stage, self:provider.stage}
     DYNAMODB_BAR_TABLE: ${self:service}-bars-${opt:stage, self:provider.stage}
   iamRoleStatements:
     - Effect: Allow
@@ -18,17 +18,33 @@ provider:
         - dynamodb:UpdateItem
         - dynamodb:DeleteItem
       Resource:
-        - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.DYNAMODB_TABLE}"
+        - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.DYNAMODB_TEAM_TABLE}"
         - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.DYNAMODB_BAR_TABLE}"
 
 functions:
+  listTeams:
+    handler: teams/list.team
+    events:
+      - http:
+          path: teams
+          method: get
+          cors: true
+
   createTeam:
     handler: teams/create.team
     events:
       - http:
           path: teams
           method: post
-          cors: true      
+          cors: true
+
+  getTeam:
+    handler: teams/get.team
+    events:
+      - http:
+          path: teams/{id}
+          method: get
+          cors: true
 
   updateTeam:
     handler: teams/update.team
@@ -38,12 +54,28 @@ functions:
           method: put
           cors: true
 
-  listTeams:
-    handler: teams/get.teams
-    events: 
+  createMember:
+    handler: teams/members/create.member
+    events:
       - http:
-          path: teams
-          method: get
+          path: teams/{id}/members
+          method: post
+          cors: true
+
+  deleteMember:
+    handler: teams/members/delete.member
+    events:
+      - http:
+          path: teams/{id}/members/{memberId}
+          method: delete
+          cors: true
+
+  createScore:
+    handler: teams/scores/create.member
+    events:
+      - http:
+          path: teams/{id}/scores
+          method: post
           cors: true
 
   listBar:
@@ -61,6 +93,13 @@ functions:
           path: bars
           method: post
           cors: true
+  getBar:
+    handler: bars/get.bar
+    events:
+      - http:
+          path: bars/{id}
+          method: get
+          cors: true
 
   updateBar:
     handler: bars/update.bar
@@ -72,7 +111,7 @@ functions:
 
 resources:
   Resources:
-    TodosDynamoDbTable:
+    TeamsDynamoDbTable:
       Type: 'AWS::DynamoDB::Table'
       DeletionPolicy: Delete
       Properties:
@@ -85,9 +124,9 @@ resources:
             AttributeName: id
             KeyType: HASH
         ProvisionedThroughput:
-          ReadCapacityUnits: 1
+          ReadCapacityUnits: 5
           WriteCapacityUnits: 1
-        TableName: ${self:provider.environment.DYNAMODB_TABLE}
+        TableName: ${self:provider.environment.DYNAMODB_TEAM_TABLE}
     BarsDynamoDbTable:
       Type: 'AWS::DynamoDB::Table'
       DeletionPolicy: Delete
@@ -101,6 +140,6 @@ resources:
             AttributeName: id
             KeyType: HASH
         ProvisionedThroughput:
-          ReadCapacityUnits: 1
+          ReadCapacityUnits: 5
           WriteCapacityUnits: 1
         TableName: ${self:provider.environment.DYNAMODB_BAR_TABLE}

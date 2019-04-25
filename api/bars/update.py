@@ -72,11 +72,13 @@ def bar(event, context):
         logger.error("No Bar to Update")
         response = {
             "statusCode": 400,
+            "headers": {"Access-Control-Allow-Origin": "*"},
             "body": "No Bar to Update"
         }
-    else: 
+    else:
         response = {
             "statusCode": 200,
+            "headers": {"Access-Control-Allow-Origin": "*"},  
             "body": json.dumps(result['Attributes'], cls=DecimalEncoder)
         }
 
