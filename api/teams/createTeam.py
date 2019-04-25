@@ -8,7 +8,7 @@ import random
 import boto3
 dynamodb = boto3.resource('dynamodb')
 
-keys = ['name', 'members']
+keys = ['name']
 
 def validateReq(data, keys):
     for item in keys:
@@ -27,8 +27,7 @@ def createTeam(event, context):
 
     item = {
         'id': str(random.randint(1, 100)),
-        'name': data['name'],
-        'members': data['members']
+        'name': data['name']
     }
 
     # write the todo to the database
@@ -37,6 +36,7 @@ def createTeam(event, context):
     # create a response
     response = {
         "statusCode": 200,
+        "headers": {"Access-Control-Allow-Origin": "*"}, 
         "body": json.dumps(item)
     }
 
