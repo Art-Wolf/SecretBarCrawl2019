@@ -28,13 +28,13 @@ logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
 ##
-# Get the list of bars from the dynamodb Table
+# Get the list of teams from the dynamodb Table
 ##
-def bar(event, context):
-    logger.info("Entering list bars")
+def team(event, context):
+    logger.info("Entering list team")
 
     dynamodb = boto3.resource('dynamodb')
-    table = dynamodb.Table(os.environ['DYNAMODB_BAR_TABLE'])
+    table = dynamodb.Table(os.environ['DYNAMODB_TEAM_TABLE'])
 
     # fetch all todos from the database
     result = table.scan()
@@ -42,7 +42,7 @@ def bar(event, context):
     # create a response
     response = {
         "statusCode": 200,
-        "headers": {"Access-Control-Allow-Origin": "*"},  
+        "headers": {"Access-Control-Allow-Origin": "*"},
         "body": json.dumps(result['Items'], cls=DecimalEncoder)
     }
 

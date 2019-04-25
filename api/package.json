@@ -1,7 +1,10 @@
 {
-  "name": "aws-rest-with-dynamodb",
+  "name": "secret-bar-crawl-api",
   "version": "1.0.0",
-  "description": "Serverless CRUD service exposing a REST HTTP interface",
+  "description": "Bar crawl api",
   "author": "",
-  "license": "MIT"
+  "license": "MIT",
+  "scripts": {
+    "deploy": "sls deploy"
+  }
 }

@@ -32,10 +32,10 @@ logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
 ##
-# Update the bar in the dynamodb Table
+# Update the team in the dynamodb Table
 ##
-def bar(event, context):
-    logger.info("Entering update bar")
+def team(event, context):
+    logger.info("Entering update team")
     logger.info("Received Event: {}".format(event))
 
     # Make sure we got data to update with
@@ -45,13 +45,13 @@ def bar(event, context):
 
     # Make sure we got an ID from the path
     if ('pathParameters' not in event) or ('id' not in event['pathParameters']):
-        logger.error("No bar id supplied in event.")
-        raise Exception("No bar id supplied in event.")
+        logger.error("No team id supplied in event.")
+        raise Exception("No team id supplied in event.")
 
     data = json.loads(event['body'])
 
     dynamodb = boto3.resource('dynamodb')
-    table = dynamodb.Table(os.environ['DYNAMODB_BAR_TABLE'])
+    table = dynamodb.Table(os.environ['DYNAMODB_TEAM_TABLE'])
 
     timestamp = int(time.time() * 1000)
     result = table.update_item(
@@ -60,25 +60,24 @@ def bar(event, context):
         },
         ExpressionAttributeValues={
           ':name': data['name'],
-          ':address': data['address'],
           ':updatedAt': timestamp,
         },
-        UpdateExpression='SET name = :name, address = :address, updatedAt = :updatedAt ',
+        UpdateExpression='SET name = :name, updatedAt = :updatedAt ',
         ReturnValues='ALL_NEW',
     )
 
     # If there was no data to update, we get back an empty string
     if not result['Attributes']:
-        logger.error("No Bar to Update")
+        logger.error("No Team to Update")
         response = {
             "statusCode": 400,
             "headers": {"Access-Control-Allow-Origin": "*"},
-            "body": "No Bar to Update"
+            "body": "No Team to Update"
         }
     else:
         response = {
             "statusCode": 200,
-            "headers": {"Access-Control-Allow-Origin": "*"},  
+            "headers": {"Access-Control-Allow-Origin": "*"},
             "body": json.dumps(result['Attributes'], cls=DecimalEncoder)
         }
 

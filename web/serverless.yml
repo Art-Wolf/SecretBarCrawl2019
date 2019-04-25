@@ -1,7 +1,7 @@
 # Welcome to serverless. Read the docs
 # https://serverless.com/framework/docs/
 
-service: serverless-web
+service: secret-bar-crawl-web
 
 plugins:
   - serverless-s3-sync

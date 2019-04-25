@@ -1,3 +1,3 @@
 export const config = {
-  apiUrl: "https://mh2lkwab1k.execute-api.us-east-1.amazonaws.com/dev/"
+  apiUrl: "https://utqkintpq9.execute-api.us-east-1.amazonaws.com/dev/"
 };

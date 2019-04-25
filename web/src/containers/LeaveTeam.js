@@ -4,25 +4,16 @@ import "./CreateTeam.css";
 import {config} from "../config";
 import { Redirect } from 'react-router-dom'
 
-export default class JoinTeam extends Component {
+export default class LeaveTeam extends Component {
   constructor(props) {
     super(props);
     this.state = {
       name: '',
       redirect: false,
-      id: props.match.params.id
+      id: props.match.params.id,
+      memberId: props.match.params.memberId
     };
   }
-
-  validateForm() {
-    return this.state.name.length > 0;
-  }
-
-  handleChange = event => {
-     this.setState({
-       [event.target.id]: event.target.value
-     });
-   }
 
    handleSubmit = async event => {
      event.preventDefault();
@@ -30,9 +21,9 @@ export default class JoinTeam extends Component {
      this.setState({ isLoading: true });
 
      try {
-        await this.joinTeam({
+        await this.leaveTeam({
           id: this.state.id,
-          name: this.state.name
+          memberId: this.state.memberId
         });
     } catch (e) {
       alert(e);
@@ -40,9 +31,9 @@ export default class JoinTeam extends Component {
     }
   }
 
-  joinTeam(team) {
-    fetch(config.apiUrl + "teams/" + team.id + "/members", {
-            method: 'POST',
+  leaveTeam(team) {
+    fetch(config.apiUrl + "teams/" + team.id + "/members/" + team.memberId, {
+            method: 'DELETE',
             mode: 'cors',
             body: JSON.stringify(team)
         })
@@ -67,22 +58,12 @@ export default class JoinTeam extends Component {
       <div className="Login">
         {this.renderRedirect()}
         <form onSubmit={this.handleSubmit}>
-          <FormGroup controlId="name" bsSize="large">
-          <ControlLabel>Member Name</ControlLabel>
-          <FormControl
-            autoFocus
-            type="name"
-            value={this.state.name}
-            onChange={this.handleChange}
-            />
-          </FormGroup>
           <Button
             block
             bsSize="large"
-            disabled={!this.validateForm()}
             type="submit"
             >
-            Join Team
+            Leave Team
           </Button>
         </form>
       </div>

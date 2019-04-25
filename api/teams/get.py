@@ -28,19 +28,19 @@ logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
 ##
-# Get an individual bar from the dynamodb Table
+# Get an individual team from the dynamodb Table
 ##
-def bar(event, context):
-    logger.info("Entering get bar")
+def team(event, context):
+    logger.info("Entering get team")
     logger.info("Received Event: {}".format(event))
 
     dynamodb = boto3.resource('dynamodb')
-    table = dynamodb.Table(os.environ['DYNAMODB_BAR_TABLE'])
+    table = dynamodb.Table(os.environ['DYNAMODB_TEAM_TABLE'])
 
     # Make sure we got an ID from the path
     if ('pathParameters' not in event) or ('id' not in event['pathParameters']):
-        logger.error("No bar id supplied in event.")
-        raise Exception("No bar id supplied in event.")
+        logger.error("No team id supplied in event.")
+        raise Exception("No team id supplied in event.")
 
     result = table.get_item(
         Key={
@@ -50,11 +50,11 @@ def bar(event, context):
 
     # If there was no data to get, we get back an empty string
     if not result.get("Item"):
-        logger.error("No Bar to Get")
+        logger.error("No Team to Get")
         response = {
             "statusCode": 400,
-            "headers": {"Access-Control-Allow-Origin": "*"},  
-            "body": "No Bar to Get"
+            "headers": {"Access-Control-Allow-Origin": "*"},
+            "body": "No Team to Get"
         }
     else:
         response = {

@@ -21,7 +21,7 @@ logger.setLevel(logging.INFO)
 ##
 # Required variables
 ##
-keys = ['name', 'address']
+keys = ['name']
 
 ##
 # Validate that the required variables were set
@@ -29,14 +29,14 @@ keys = ['name', 'address']
 def validateReq(data, keys):
     for item in keys:
         if item not in data:
-            logger.error("Couldn't create the bar, no %s." % item)
-            raise Exception("Couldn't create the bar, no %s." % item)
+            logger.error("Couldn't create the team, no %s." % item)
+            raise Exception("Couldn't create the team, no %s." % item)
 
 ##
-# Create the bar
+# Create the Team
 ##
-def bar(event, context):
-    logger.info("Entering create bar")
+def team(event, context):
+    logger.info("Entering create team")
     logger.info("Received Event: {}".format(event))
 
     # Make sure we got data to update with
@@ -48,18 +48,17 @@ def bar(event, context):
     validateReq(data, keys)
 
     dynamodb = boto3.resource('dynamodb')
-    table = dynamodb.Table(os.environ['DYNAMODB_BAR_TABLE'])
+    table = dynamodb.Table(os.environ['DYNAMODB_TEAM_TABLE'])
 
     timestamp = int(time.time() * 1000)
     item = {
         'id': str(uuid.uuid1()),
         'name': data['name'],
-        'address': data['address'],
         'createdAt': timestamp,
         'updatedAt': timestamp,
     }
 
-    logger.info("Creating Bar: {}".format(item));
+    logger.info("Creating Team: {}".format(item));
 
     # write the data to the database
     newItem = table.put_item(Item=item)
@@ -67,7 +66,7 @@ def bar(event, context):
     # create a response
     response = {
         "statusCode": 200,
-        "headers": {"Access-Control-Allow-Origin": "*"},  
+        "headers": {"Access-Control-Allow-Origin": "*"},
         "body": json.dumps(item)
     }
 

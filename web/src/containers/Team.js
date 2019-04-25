@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import { PageHeader, ListGroup } from "react-bootstrap";
+import { PageHeader, ListGroup, ListGroupItem } from "react-bootstrap";
+import { LinkContainer } from "react-router-bootstrap";
 import "./Team.css";
 import {config} from "../config";
 
@@ -38,25 +39,61 @@ export default class Team extends Component {
             return response.json();
         })
         .then((json) => {
-            this.setState({ isLoading: false })
             console.log('Team info: ', json)
             this.setState({ team: json })
+            this.setState({ isLoading: false })
         });
   }
 
-  renderTeamDetails(id) {
-      return (
-        <div>
-          <PageHeader>Team: {this.state.team ? this.state.team.name : ''}</PageHeader>
-          <p>Stuff</p>
+  renderTeamMembers(members, teamId) {
+    return [{}].concat(members).map(
+      (member, i) =>
+        i !== 0
+          ? <LinkContainer
+              key={member.id}
+              to={`/team/${teamId}/members/${member.id}`}
+            >
+              <ListGroupItem header={member.name.trim().split("\n")[0]}>
+                {"Added: " + new Date(member.createdAt).toLocaleString()}
+              </ListGroupItem>
+            </LinkContainer>
+          : <LinkContainer
+              key="new"
+              to={`/team/${teamId}/join`}
+            >
+              <ListGroupItem>
+                <h4>
+                  <b>{"\uFF0B"}</b> Join the Team
+                </h4>
+              </ListGroupItem>
+            </LinkContainer>
+    );
+  }
+
+  renderTeamDetails(team) {
+    return (
+      <div>
+        <PageHeader>Team: {team.name}</PageHeader>
+        <div className="members">
+          {this.state.team.members ? this.renderTeamMembers(this.state.team.members, this.state.team.id): <LinkContainer
+              key="new"
+              to={`/team/${team.id}/join`}
+            >
+              <ListGroupItem>
+                <h4>
+                  <b>{"\uFF0B"}</b> Join the Team
+                </h4>
+              </ListGroupItem>
+            </LinkContainer>}
         </div>
-      );
+      </div>
+    );
   }
 
   renderTeam() {
     return (
       <div className="team">
-        {this.state.isLoading ? 'No data to load...' : this.renderTeamDetails(this.state.id)}
+        {this.state.isLoading ? 'No data to load...' : this.renderTeamDetails(this.state.team)}
       </div>
     );
   }

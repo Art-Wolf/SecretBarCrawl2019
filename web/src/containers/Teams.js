@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import { PageHeader, ListGroup } from "react-bootstrap";
+import { PageHeader, ListGroup, ListGroupItem } from "react-bootstrap";
+import { LinkContainer } from "react-router-bootstrap";
 import "./Teams.css";
 import {config} from "../config";
 
@@ -24,25 +25,41 @@ export default class Teams extends Component {
             return response.json();
         })
         .then((json) => {
-            this.setState({ isLoading: false })
             console.log('Teams list: ', json)
             this.setState({ teams: json })
+            this.setState({ isLoading: false })
         });
   }
 
-  renderTeamsDetails() {
-      return (
-        <div>
-          <PageHeader>Teams</PageHeader>
-          <p>Stuff</p>
-        </div>
-      );
+  renderTeamsList(teams) {
+    return [{}].concat(teams).map(
+      (team, i) =>
+        i !== 0
+          ? <LinkContainer
+              key={team.id}
+              to={`/team/${team.id}`}
+            >
+              <ListGroupItem header={team.name.trim().split("\n")[0]}>
+                {"Created: " + new Date(team.createdAt).toLocaleString()}
+              </ListGroupItem>
+            </LinkContainer>
+          : <LinkContainer
+              key="new"
+              to="/newteam"
+            >
+              <ListGroupItem>
+                <h4>
+                  <b>{"\uFF0B"}</b> Create a new Team
+                </h4>
+              </ListGroupItem>
+            </LinkContainer>
+    );
   }
 
   renderTeams() {
     return (
-      <div className="team">
-        {this.state.isLoading ? 'Data not loading...' : this.renderTeamsDetails()}
+      <div className="teams">
+        {this.state.isLoading ? 'Data not loading...' : this.renderTeamsList(this.state.teams)}
       </div>
     );
   }
