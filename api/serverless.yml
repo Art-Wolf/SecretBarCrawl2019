@@ -23,7 +23,7 @@ provider:
 
 functions:
   createTeam:
-    handler: teams/createTeam.createTeam
+    handler: teams/create.team
     events:
       - http:
           path: teams
@@ -31,11 +31,19 @@ functions:
           cors: true
 
   updateTeam:
-    handler: teams/updateTeam.updateTeam
+    handler: teams/update.team
     events:
       - http:
           path: teams/{id}
           method: put
+          cors: true
+
+  listTeams:
+    handler: teams/get.teams
+    events: 
+      - http:
+          path: teams
+          method: get
           cors: true
 
   listBar:
@@ -73,7 +81,7 @@ resources:
   Resources:
     TodosDynamoDbTable:
       Type: 'AWS::DynamoDB::Table'
-      DeletionPolicy: Retain
+      DeletionPolicy: Delete
       Properties:
         AttributeDefinitions:
           -
