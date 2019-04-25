@@ -37,6 +37,23 @@ paths:
             Access-Control-Allow-Headers:
               type: "string"
   /bars/{id}:
+    get:
+      summary: Retrieve a bar
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The id of the bar to get
+          type: string
+      responses:
+        "200":
+          description: Expected response to a valid request
+          schema:
+            $ref: '#/definitions/Bar'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
     put:
       summary: Update a bar
       parameters:
