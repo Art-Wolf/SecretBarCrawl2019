@@ -70,6 +70,14 @@ functions:
           method: delete
           cors: true
 
+  createScore:
+    handler: teams/scores/create.member
+    events:
+      - http:
+          path: teams/{id}/scores
+          method: post
+          cors: true
+
   listBar:
     handler: bars/list.bar
     events:
