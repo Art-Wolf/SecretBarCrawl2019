@@ -28,7 +28,7 @@ functions:
       - http:
           path: teams
           method: post
-          cors: true      
+          cors: true
 
   updateTeam:
     handler: teams/updateTeam.updateTeam
@@ -52,6 +52,13 @@ functions:
       - http:
           path: bars
           method: post
+          cors: true
+  getBar:
+    handler: bars/get.bar
+    events:
+      - http:
+          path: bars/{id}
+          method: get
           cors: true
 
   updateBar:

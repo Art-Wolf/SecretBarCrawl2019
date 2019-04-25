@@ -1,90 +1,46 @@
-import React, {Component} from 'react';
-import {
-  Button,
-  Col,
-  Collapse,
-  Container,
-  Jumbotron,
-  Nav,
-  Navbar,
-  NavbarBrand,
-  NavbarToggler,
-  NavItem,
-  NavLink,
-  Row,
-} from 'reactstrap';
+import React, { Component } from "react";
+import "./App.css";
+import Routes from "./Routes";
+import { Link } from "react-router-dom";
+import { Nav, Navbar, NavItem } from "react-bootstrap";
+import { LinkContainer } from "react-router-bootstrap";
+
 
 class App extends Component {
-  constructor (props) {
-    super (props);
-
-    this.toggle = this.toggle.bind (this);
-    this.state = {
-      isOpen: false,
-    };
-  }
-  toggle () {
-    this.setState ({
-      isOpen: !this.state.isOpen,
-    });
-  }
-  render () {
+  render() {
     return (
-      <div>
-        <Navbar color="inverse" light expand="md">
-          <NavbarBrand href="/">reactstrap</NavbarBrand>
-          <NavbarToggler onClick={this.toggle} />
-          <Collapse isOpen={this.state.isOpen} navbar>
-            <Nav className="ml-auto" navbar>
-              <NavItem>
-                <NavLink href="/components/">Components</NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink href="https://github.com/reactstrap/reactstrap">
-                  Github
-                </NavLink>
-              </NavItem>
+      <div className="App container">
+        <Navbar fluid collapseOnSelect>
+          <Navbar.Header>
+            <Navbar.Brand>
+              <Link to="/">Secret Bar Crawl</Link>
+            </Navbar.Brand>
+            <Navbar.Toggle />
+          </Navbar.Header>
+          <Navbar.Collapse>
+            <Nav pullRight>
+              <LinkContainer to="/rules"><NavItem>Rules</NavItem></LinkContainer>
+              <LinkContainer to="/teams"><NavItem>Teams</NavItem></LinkContainer>
             </Nav>
-          </Collapse>
+          </Navbar.Collapse>
         </Navbar>
-        <Jumbotron>
-          <Container>
-            <Row>
-              <Col>
-                <h1>Welcome to React</h1>
-                <p>
-                  <Button
-                    tag="a"
-                    color="success"
-                    size="large"
-                    href="http://reactstrap.github.io"
-                    target="_blank"
-                  >
-                    View Reactstrap Docs
-                  </Button>
-                </p>
-              </Col>
-            </Row>
-          </Container>
-        </Jumbotron>
-        <Navbar fixed="bottom" color="dark" dark>
-          <Nav pills fill justified>
-            <NavItem>
-              <NavLink href="#" active>Bar 1</NavLink>
-            </NavItem>
-            <NavItem>
-              <NavLink href="#" style={{color: '#fff'}}>Bar 2</NavLink>
-            </NavItem>
-            <NavItem>
-              <NavLink href="#" style={{color: '#fff'}}>Bar 3</NavLink>
-            </NavItem>
-            <NavItem>
-              <NavLink href="#" style={{color: '#fff'}}>Bar 4</NavLink>
-            </NavItem>
-            <NavItem>
-              <NavLink href="#" style={{color: '#fff'}}>Bar 5</NavLink>
-            </NavItem>
-          </Nav>
+        <Routes />
+        <Navbar fluid collapseOnSelect>
+          <Navbar.Header>
+            <Navbar.Brand>
+              <Link to="/">Bars</Link>
+            </Navbar.Brand>
+            <Navbar.Toggle />
+          </Navbar.Header>
+          <Navbar.Collapse>
+            <Nav pullRight>
+              <LinkContainer to="/bar/1"><NavItem>Bar 1</NavItem></LinkContainer>
+              <LinkContainer to="/bar/2"><NavItem>Bar 2</NavItem></LinkContainer>
+              <LinkContainer to="/bar/3"><NavItem>Bar 3</NavItem></LinkContainer>
+              <LinkContainer to="/bar/4"><NavItem>Bar 4</NavItem></LinkContainer>
+              <LinkContainer to="/bar/5"><NavItem>Bar 5</NavItem></LinkContainer>
+            </Nav>
+          </Navbar.Collapse>
         </Navbar>
       </div>
     );
