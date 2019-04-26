@@ -65,6 +65,7 @@ export default class Teams extends Component {
   render() {
     return (
       <div className="Home">
+        <PageHeader>Teams</PageHeader>
         {this.renderTeams()}
       </div>
     );

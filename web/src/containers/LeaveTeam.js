@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Button, FormGroup, FormControl, ControlLabel } from "react-bootstrap";
+import { PageHeader, Button, FormGroup, FormControl, ControlLabel } from "react-bootstrap";
 import "./CreateTeam.css";
 import {config} from "../config";
 import { Redirect } from 'react-router-dom'
@@ -55,6 +55,7 @@ export default class LeaveTeam extends Component {
     return (
       <div className="Login">
         {this.renderRedirect()}
+        <PageHeader>Leave Team</PageHeader>
         <form onSubmit={this.handleSubmit}>
           <Button
             block
