@@ -1,12 +1,12 @@
 import React, { Component } from "react";
+import { PageHeader } from "react-bootstrap";
 import "./Rules.css";
 
 export default class Rules extends Component {
   render() {
     return (
       <div className="Home">
-        <div className="lander">
-          <h1>General Scoring Rules</h1>
+          <PageHeader>General Scoring Rules</PageHeader>
               <ul>
                 <li>At the beginning of each Bar, each team wagers a cap on the amount of points they wish to drink.</li>
                 <li>Caps must be given before starting to drink</li>
@@ -19,7 +19,6 @@ export default class Rules extends Component {
                 <li>Pitchers are worth 6pts</li>
                 <li>Record your points on the site at the end of each bar!</li>
               </ul>
-        </div>
       </div>
     );
   }
