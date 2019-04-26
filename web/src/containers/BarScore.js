@@ -176,7 +176,6 @@ export default class BarScore extends Component {
           <FormGroup controlId="scoreValue" bsSize="large">
           <ControlLabel>Score</ControlLabel>
           <FormControl
-            autoFocus
             type="name"
             value={this.state.scoreValue}
             onChange={this.handleChange}

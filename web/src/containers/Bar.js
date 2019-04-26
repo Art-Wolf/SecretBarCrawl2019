@@ -89,7 +89,7 @@ export default class Bar extends Component {
   renderBarDetails(id) {
       return (
         <div>
-          <PageHeader>Bar: {this.state.bar ? this.state.bar.name : ''}</PageHeader>
+          <PageHeader>{this.state.bar ? this.state.bar.name : ''}</PageHeader>
           <p>{this.state.bar.rule ? this.state.bar.rule : 'Loading rules...' }</p>
 
           <hr />
