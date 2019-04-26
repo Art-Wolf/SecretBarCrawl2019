@@ -65,7 +65,7 @@ export default class BarScore extends Component {
   }
 
   validateScoreForm() {
-    return this.state.scoreAllowed;
+    return this.state.scoreValue.length > 0;
   }
 
   handleChange = event => {
@@ -165,7 +165,6 @@ export default class BarScore extends Component {
             autoFocus
             type="name"
             value={this.state.scoreValue}
-            disabled={!this.validateScoreForm()}
             onChange={this.handleChange}
             />
           </FormGroup>
