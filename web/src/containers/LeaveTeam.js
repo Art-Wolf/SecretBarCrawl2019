@@ -59,7 +59,7 @@ export default class LeaveTeam extends Component {
         <form onSubmit={this.handleSubmit}>
           <Button
             block
-            bsStyle="warning"
+            bsStyle="danger"
             bsSize="large"
             type="submit"
             >
