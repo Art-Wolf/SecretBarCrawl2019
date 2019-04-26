@@ -26,12 +26,20 @@ code {
     monospace;
 }
 
+.container-fluid {
+  background-color: #881c1c;
+}
+
 .navbar-header {
   background-color: #881c1c;
 }
 
 .navbar-default .navbar-brand{
   color: #ffffff;
+}
+
+.navbar-default .navbar-nav>li>a {
+    color: #fff;
 }
 
 .navbar-default .navbar-toggle .icon-bar {
