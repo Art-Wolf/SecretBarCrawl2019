@@ -8,7 +8,8 @@ export default class Bar extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isLoading: true,
+      isBarLoading: true,
+      isTeamsLoading: true,
       id: props.match.params.id,
       teams: []
     };
@@ -43,7 +44,7 @@ export default class Bar extends Component {
         .then((json) => {
             console.log('Bar info: ', json)
             this.setState({ bar: json })
-            this.setState({ isLoading: false })
+            this.setState({ isBarLoading: false })
         });
   }
 
@@ -58,7 +59,7 @@ export default class Bar extends Component {
         .then((json) => {
             console.log('Teams list: ', json)
             this.setState({ teams: json })
-            this.setState({ isLoading: false })
+            this.setState({ isTeamsLoading: false })
         });
   }
 
@@ -80,7 +81,7 @@ export default class Bar extends Component {
   renderTeams() {
     return (
       <div className="teams">
-        {this.state.isLoading ? 'Loading...' : this.renderTeamsList(this.state.teams)}
+        {this.state.isTeamsLoading ? 'Loading teams...' : this.renderTeamsList(this.state.teams)}
       </div>
     );
   }
@@ -89,7 +90,7 @@ export default class Bar extends Component {
       return (
         <div>
           <PageHeader>Bar: {this.state.bar ? this.state.bar.name : ''}</PageHeader>
-          <p>{this.state.bar.rule}</p>
+          <p>{this.state.bar.rule ? this.state.bar.rule : 'Loading rules...' }</p>
           {this.renderTeams()}
         </div>
       );
@@ -98,7 +99,7 @@ export default class Bar extends Component {
   renderBar() {
     return (
       <div className="bar">
-        {this.state.isLoading ? '' : this.renderBarDetails(this.state.id)}
+        {this.state.isBarLoading ? '' : this.renderBarDetails(this.state.id)}
       </div>
     );
   }

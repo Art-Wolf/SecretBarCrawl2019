@@ -99,7 +99,7 @@ def score(event, context):
                     }
                 else:
                     tempScore = score
-                    
+
                     logger.info("Calculating new score")
                     if int(score['bet']) > int(data['score']):
                         tempScore['score'] = int(data['score'])/2
@@ -119,14 +119,23 @@ def score(event, context):
         logger.info("Adding Score to Team: {}".format(result['Item']))
 
         # write the data to the database
-        newItem = table.put_item(Item=result['Item'])
+        table.update_item(
+                Key={
+                    'id': result['Item']['id']
+                },
+                ExpressionAttributeValues={
+                  ':scores': result['Item']['scores'],
+                  ':updatedAt': timestamp,
+                },
+                UpdateExpression='SET scores = :scores, updatedAt = :updatedAt ',
+                ReturnValues='ALL_NEW',
+            )
 
         # create a response
         if found:
             response = {
                 "statusCode": 200,
-                "headers": {"Access-Control-Allow-Origin": "*"},
-                "body": json.dumps(newItem, cls=DecimalEncoder)
+                "headers": {"Access-Control-Allow-Origin": "*"}
                 }
 
     logger.info("Returning Response: {}".format(response))
