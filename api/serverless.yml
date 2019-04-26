@@ -8,6 +8,7 @@ provider:
   environment:
     DYNAMODB_TEAM_TABLE: ${self:service}-teams-${opt:stage, self:provider.stage}
     DYNAMODB_BAR_TABLE: ${self:service}-bars-${opt:stage, self:provider.stage}
+    DYNAMODB_CHALLENGE_TABLE: ${self:service}-challenges-${opt:stage, self:provider.stage}
   iamRoleStatements:
     - Effect: Allow
       Action:
@@ -20,6 +21,7 @@ provider:
       Resource:
         - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.DYNAMODB_TEAM_TABLE}"
         - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.DYNAMODB_BAR_TABLE}"
+        - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.DYNAMODB_CHALLENGE_TABLE}"
 
 functions:
   listTeams:
@@ -125,6 +127,14 @@ functions:
           method: put
           cors: true
 
+  listChallenge:
+    handler: challenges/list.challenge
+    events:
+      - http:
+          path: challenges
+          method: get
+          cors: true
+
 resources:
   Resources:
     TeamsDynamoDbTable:
@@ -159,3 +169,19 @@ resources:
           ReadCapacityUnits: 5
           WriteCapacityUnits: 1
         TableName: ${self:provider.environment.DYNAMODB_BAR_TABLE}
+    ChallengeDynamoDbTable:
+      Type: 'AWS::DynamoDB::Table'
+      DeletionPolicy: Delete
+      Properties:
+        AttributeDefinitions:
+          -
+            AttributeName: id
+            AttributeType: S
+        KeySchema:
+          -
+            AttributeName: id
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 5
+          WriteCapacityUnits: 1
+        TableName: ${self:provider.environment.DYNAMODB_CHALLENGE_TABLE}
