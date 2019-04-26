@@ -54,7 +54,13 @@ export default class BonusPoint extends Component {
   }
 
   validateForm() {
-    return this.state.points.length > 0;
+    if (this.state.points.length > 0) {
+      if (/^\d+$/.test(this.state.points)) {
+          return true;
+      }
+    }
+
+    return false;
   }
 
   handleChange = event => {

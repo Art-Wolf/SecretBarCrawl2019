@@ -66,8 +66,44 @@ export default class BarScore extends Component {
     return this.state.betAllowed;
   }
 
+
+  validateBetSubmit() {
+    if (!this.state.betAllowed) {
+      return false;
+    }
+
+    if (this.state.betValue) {
+      if (/^\d+$/.test(this.state.betValue)) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
   validateScoreForm() {
-    return this.state.scoreValue ? this.state.scoreValue.length > 0 : false;
+    if (this.state.betValue.length > 0 ) {
+      return true;
+    }
+
+    return false;
+  }
+
+  validateScoreSubmit() {
+    if (this.state.betValue.length > 0 ) {
+      if (!this.state.scoreValue) {
+        return true;
+      }
+      if (this.state.scoreValue.length > 0) {
+        if (/^\d+$/.test(this.state.scoreValue)) {
+          return true;
+        }
+      }
+    }
+
+    return false;
   }
 
   handleChange = event => {
@@ -166,7 +202,7 @@ export default class BarScore extends Component {
           <Button
             block
             bsSize="large"
-            disabled={!this.validateBetForm()}
+            disabled={!this.validateBetSubmit()}
             type="submit"
             >
             Set Bet
@@ -178,13 +214,14 @@ export default class BarScore extends Component {
           <FormControl
             type="name"
             value={this.state.scoreValue}
+            disabled={!this.validateScoreForm()}
             onChange={this.handleChange}
             />
           </FormGroup>
           <Button
             block
             bsSize="large"
-            disabled={!this.validateScoreForm()}
+            disabled={!this.validateScoreSubmit()}
             type="submit"
             >
             Submit Score
