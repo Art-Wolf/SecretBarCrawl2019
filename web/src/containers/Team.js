@@ -53,9 +53,7 @@ export default class Team extends Component {
               key={member.id}
               to={`/team/${teamId}/members/${member.id}`}
             >
-              <ListGroupItem header={member.name.trim().split("\n")[0]}>
-                {"Added: " + new Date(member.createdAt).toLocaleString()}
-              </ListGroupItem>
+              <ListGroupItem header={member.name.trim().split("\n")[0]}/>
             </LinkContainer>
           : <LinkContainer
               key="new"
