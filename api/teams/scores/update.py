@@ -99,6 +99,7 @@ def score(event, context):
                     }
                 else:
                     tempScore = score
+                    tempScore['submittedScore'] = data['score']
 
                     logger.info("Calculating new score")
                     if int(score['bet']) > int(data['score']):
@@ -114,7 +115,7 @@ def score(event, context):
                     found = True
             else:
                 totalScore += int(score['score'])
-        
+
         bonusPoints = 0 if 'bonusPoints' not in result['Item'] else result['Item']['bonusPoints']
 
         result['Item']['totalScore'] = totalScore + bonusPoints

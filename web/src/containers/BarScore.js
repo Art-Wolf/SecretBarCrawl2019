@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Button, FormGroup, FormControl, ControlLabel } from "react-bootstrap";
+import { Panel, PageHeader, Button, FormGroup, FormControl, ControlLabel } from "react-bootstrap";
 import "./CreateTeam.css";
 import {config} from "../config";
 import { Redirect } from 'react-router-dom'
@@ -15,7 +15,8 @@ export default class BarScore extends Component {
       betValue: '',
       betAllowed: true,
       scoreValue: '',
-      scoreAllowed: true
+      noScore: true,
+      awardedValue: ''
     };
   }
 
@@ -52,8 +53,9 @@ export default class BarScore extends Component {
           }
 
           if (obj.score) {
-            this.setState({scoreValue: obj.score});
-            this.setState({scoreAllowed: false});
+            this.setState({scoreValue: obj.submittedScore});
+            this.setState({awardedValue: obj.score});
+            this.setState({noScore: false});
           }
         }
       }
@@ -65,7 +67,7 @@ export default class BarScore extends Component {
   }
 
   validateScoreForm() {
-    return this.state.scoreValue.length > 0;
+    return this.state.scoreValue ? this.state.scoreValue.length > 0 : false;
   }
 
   handleChange = event => {
@@ -134,9 +136,21 @@ export default class BarScore extends Component {
     }
   }
 
+  renderAwarded() {
+    return (
+      <div className="Award">
+      <h2>Points</h2>
+      <Panel>
+        <Panel.Body>You've been awarded <b>{this.state.awardedValue}</b> points.</Panel.Body>
+      </Panel>
+      </div>
+    );
+  }
+
   render() {
     return (
       <div className="Login">
+        <PageHeader>Submit Bar Score</PageHeader>
         {this.renderRedirect()}
         <form onSubmit={this.handleBetSubmit}>
           <FormGroup controlId="betValue" bsSize="large">
@@ -177,6 +191,8 @@ export default class BarScore extends Component {
             Submit Score
           </Button>
         </form>
+
+        { this.renderAwarded() }
       </div>
     );
   }
