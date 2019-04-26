@@ -45,3 +45,12 @@ code {
 .navbar-default .navbar-toggle .icon-bar {
   background-color: #ffffff;
 }
+
+.navbar-default .navbar-toggle:focus, .navbar-default .navbar-toggle:hover {
+    background-color: #ddd;
+    color: #881c1c;
+}
+
+.navbar-default .navbar-toggle:focus .icon-bar {
+    background-color: #881c1c;
+}
