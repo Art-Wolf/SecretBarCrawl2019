@@ -64,8 +64,8 @@ export default class Home extends Component {
     return (
       <div className="Home">
         <div className="lander">
-          <h1>Secret Bar Crawl</h1>
-          <p>All The secrets!</p>
+          <h1>Fencing Alumni Secret Bar Crawl</h1>
+          <p>Don't forget to check the challenges!</p>
           {this.renderTeams()}
         </div>
       </div>
