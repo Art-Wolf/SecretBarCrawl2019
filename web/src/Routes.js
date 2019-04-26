@@ -3,6 +3,7 @@ import { Route, Switch } from "react-router-dom";
 import Home from "./containers/Home";
 import NotFound from "./containers/NotFound";
 import Bar from "./containers/Bar";
+import BarScore from "./containers/BarScore";
 import CreateTeam from "./containers/CreateTeam";
 import JoinTeam from "./containers/JoinTeam";
 import LeaveTeam from "./containers/LeaveTeam";
@@ -20,6 +21,7 @@ export default () =>
     <Route path="/team/:id/join" exact component={JoinTeam} />
     <Route path="/team/:id/members/:memberId" exact component={LeaveTeam} />
     <Route path="/bar/:id" exact component={Bar} />
+    <Route path="/bar/:id/team/:teamId" exact component={BarScore} />
     { /* Finally, catch all unmatched routes */ }
     <Route component={NotFound} />
   </Switch>;
