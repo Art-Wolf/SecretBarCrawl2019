@@ -20,6 +20,7 @@ class App extends Component {
           <Navbar.Collapse>
             <Nav pullRight>
               <LinkContainer to="/rules"><NavItem>Rules</NavItem></LinkContainer>
+              <LinkContainer to="/challenges"><NavItem>Challenges</NavItem></LinkContainer>
               <LinkContainer to="/teams"><NavItem>Teams</NavItem></LinkContainer>
             </Nav>
           </Navbar.Collapse>

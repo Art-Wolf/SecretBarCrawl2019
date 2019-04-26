@@ -57,7 +57,7 @@ export default class Teams extends Component {
   renderTeams() {
     return (
       <div className="teams">
-        {this.state.isLoading ? 'Data not loading...' : this.renderTeamsList(this.state.teams)}
+        {this.state.isLoading ? 'Loading teams data...' : this.renderTeamsList(this.state.teams)}
       </div>
     );
   }
@@ -65,6 +65,7 @@ export default class Teams extends Component {
   render() {
     return (
       <div className="Home">
+        <PageHeader>Teams</PageHeader>
         {this.renderTeams()}
       </div>
     );
