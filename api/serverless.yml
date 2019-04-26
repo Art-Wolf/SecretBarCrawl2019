@@ -131,7 +131,7 @@ functions:
     handler: challenges/list.challenge
     events:
       - http:
-          path: bars
+          path: challenges
           method: get
           cors: true
 
