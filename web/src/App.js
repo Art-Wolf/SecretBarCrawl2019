@@ -19,6 +19,7 @@ class App extends Component {
           </Navbar.Header>
           <Navbar.Collapse>
             <Nav pullRight>
+              <LinkContainer to="/bars"><NavItem>Bars</NavItem></LinkContainer>
               <LinkContainer to="/rules"><NavItem>Rules</NavItem></LinkContainer>
               <LinkContainer to="/challenges"><NavItem>Challenges</NavItem></LinkContainer>
               <LinkContainer to="/teams"><NavItem>Teams</NavItem></LinkContainer>
@@ -26,23 +27,6 @@ class App extends Component {
           </Navbar.Collapse>
         </Navbar>
         <Routes />
-        <Navbar fluid collapseOnSelect>
-          <Navbar.Header>
-            <Navbar.Brand>
-              <Link to="/">Bars</Link>
-            </Navbar.Brand>
-            <Navbar.Toggle />
-          </Navbar.Header>
-          <Navbar.Collapse>
-            <Nav pullRight>
-              <LinkContainer to="/bar/1"><NavItem>Bar 1</NavItem></LinkContainer>
-              <LinkContainer to="/bar/2"><NavItem>Bar 2</NavItem></LinkContainer>
-              <LinkContainer to="/bar/3"><NavItem>Bar 3</NavItem></LinkContainer>
-              <LinkContainer to="/bar/4"><NavItem>Bar 4</NavItem></LinkContainer>
-              <LinkContainer to="/bar/5"><NavItem>Bar 5</NavItem></LinkContainer>
-            </Nav>
-          </Navbar.Collapse>
-        </Navbar>
       </div>
     );
   }
