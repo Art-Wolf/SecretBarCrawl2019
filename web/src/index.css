@@ -25,3 +25,15 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+.navbar-header {
+  background-color: #881c1c;
+}
+
+.navbar-default .navbar-brand{
+  color: #ffffff;
+}
+
+.navbar-default .navbar-toggle .icon-bar {
+  background-color: #ffffff;
+}
