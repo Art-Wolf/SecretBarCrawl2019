@@ -33,7 +33,7 @@ logger.setLevel(logging.INFO)
 ##
 # Required variables
 ##
-keys = ['barId', 'score']
+keys = ['bonusPoints']
 
 ##
 # Validate that the required variables were set
@@ -41,14 +41,14 @@ keys = ['barId', 'score']
 def validateReq(data, keys):
     for item in keys:
         if item not in data:
-            logger.error("Couldn't create the score, no %s." % item)
-            raise Exception("Couldn't create the score, no %s." % item)
+            logger.error("Couldn't create the bet, no %s." % item)
+            raise Exception("Couldn't create the bet, no %s." % item)
 
 ##
-# Create a score on the Team
+# Create a Member on the Team
 ##
-def score(event, context):
-    logger.info("Entering create score")
+def bonusPoints(event, context):
+    logger.info("Entering create bonusPoints")
     logger.info("Received Event: {}".format(event))
 
     # Make sure we got data to update with
@@ -83,63 +83,45 @@ def score(event, context):
             "headers": {"Access-Control-Allow-Origin": "*"},
             "body": "Team not found."
         }
-    else:
-        tempScore = {}
-        found = False
+    else:     
+        # Check if there are any existing scores
+        if 'bonusPoints' not in result['Item']:
+            logger.info("First bonusPoints on team");
+            result['Item']['bonusPoints'] = 0
+
+        result['Item']['bonusPoints'] += data['bonusPoints']
+        result['Item']['updatedAt'] = timestamp
+
+        logger.info("Adding bonus points to Team: {}".format(result['Item']))
+
         totalScore = 0
 
-        for score in result['Item']['scores']:
-            if score['barId'] == data['barId']:
-                if score['bet'] is None:
-                    logger.error("No bet placed for this bar")
-                    response = {
-                        "statusCode": 400,
-                        "headers": {"Access-Control-Allow-Origin": "*"},
-                        "body": "No bet placed for this bar."
-                    }
-                else:
-                    tempScore = score
-
-                    logger.info("Calculating new score")
-                    if int(score['bet']) > int(data['score']):
-                        tempScore['score'] = int(data['score'])/2
-                    else:
-                        tempScore['score'] = score['bet']
-
-                    totalScore += int(tempScore['score'])
-                    result['Item']['scores'].remove(score)
-
-                    result['Item']['scores'].append(tempScore)
-                    result['Item']['updatedAt'] = timestamp
-                    found = True
-            else:
-                totalScore += int(score['score'])
-        
-        bonusPoints = 0 if 'bonusPoints' not in result['Item'] else result['Item']['bonusPoints']
-
-        result['Item']['totalScore'] = totalScore + bonusPoints
-        logger.info("Adding Score to Team: {}".format(result['Item']))
-
+        if 'scores' not in result['Item']:
+            totalScore = result['Item']['bonusPoints']
+        else: 
+            for score in result['Item']['scores']:
+                totalScore += score['score'] if 'score' in score else 0
+            totalScore += result['Item']['bonusPoints']
+        result['Item']['totalScore'] = totalScore
         # write the data to the database
         table.update_item(
                 Key={
                     'id': result['Item']['id']
                 },
                 ExpressionAttributeValues={
-                  ':scores': result['Item']['scores'],
+                  ':bonusPoints': result['Item']['bonusPoints'],
                   ':totalScore': result['Item']['totalScore'],
                   ':updatedAt': timestamp,
                 },
-                UpdateExpression='SET scores = :scores, updatedAt = :updatedAt, totalScore = :totalScore ',
+                UpdateExpression='SET bonusPoints = :bonusPoints, totalScore = :totalScore, updatedAt = :updatedAt ',
                 ReturnValues='ALL_NEW',
             )
 
         # create a response
-        if found:
-            response = {
-                "statusCode": 200,
-                "headers": {"Access-Control-Allow-Origin": "*"}
-                }
+        response = {
+            "statusCode": 200,
+            "headers": {"Access-Control-Allow-Origin": "*"}
+            }
 
-    logger.info("Returning Response: {}".format(response))
+    logger.info("Returning Response: {}".format(response));
     return response

@@ -85,7 +85,14 @@ functions:
           path: teams/{id}/scores
           method: put
           cors: true
-        
+
+  createBonusPoints:
+    handler: /teams/bonusPoints/create.bonusPoints
+    events: 
+      - http:
+          path: teams/{id}/bonuspoints
+          method: put
+          cors: true
 
   listBar:
     handler: bars/list.bar
