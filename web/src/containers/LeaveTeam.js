@@ -42,8 +42,6 @@ export default class LeaveTeam extends Component {
         })
         .then((json) => {
             this.setState({ redirect: true })
-            console.log('New Team info: ', json)
-            this.setState({ team: json })
         });
   }
 
@@ -60,6 +58,7 @@ export default class LeaveTeam extends Component {
         <form onSubmit={this.handleSubmit}>
           <Button
             block
+            bsStyle="warning"
             bsSize="large"
             type="submit"
             >
