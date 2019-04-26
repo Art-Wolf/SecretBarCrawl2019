@@ -13,7 +13,8 @@ export default class BonusPoint extends Component {
       isChallengeLoading: true,
       redirect: false,
       challengeId: props.match.params.id,
-      teamId: props.match.params.teamId
+      teamId: props.match.params.teamId,
+      points: ''
     };
   }
 
@@ -38,7 +39,7 @@ export default class BonusPoint extends Component {
   }
 
   challenge(id) {
-    fetch(config.apiUrl + "challeneges/" + id, {
+    fetch(config.apiUrl + "challenges/" + id, {
             method: 'GET',
             mode: 'cors'
         })
@@ -50,6 +51,10 @@ export default class BonusPoint extends Component {
             this.setState({ challenge: json })
             this.setState({ isChallengeLoading: false })
         });
+  }
+
+  validateForm() {
+    return this.state.points.length > 0;
   }
 
   handleChange = event => {
@@ -66,7 +71,7 @@ export default class BonusPoint extends Component {
      try {
         await this.addBonusPoints({
           challengeId: this.state.challengeId,
-          bonusPoints: this.state.challenge.points
+          bonusPoints: this.state.points
         });
     } catch (e) {
       alert(e);
@@ -96,6 +101,7 @@ export default class BonusPoint extends Component {
       <Button
         block
         bsSize="large"
+        disabled={!this.validateForm()}
         type="submit"
         >
         Add Bonus Points
@@ -106,14 +112,16 @@ export default class BonusPoint extends Component {
     return (
       <div className="Login">
         {this.renderRedirect()}
+        <p>This challenge is worth <b>{this.state.challenge.points}</b>.</p>
+        <p>How many points did your team earn?</p>
         <form onSubmit={this.handleSubmit}>
-          <FormGroup controlId="betValue" bsSize="large">
+          <FormGroup controlId="points" bsSize="large">
           <ControlLabel>Bet</ControlLabel>
           <FormControl
             autoFocus
-            type="name"
-            value={this.state.challenge.points}
-            disabled=true
+            type="points"
+            value={this.state.points}
+            onChange={this.handleChange}
             />
           </FormGroup>
           {this.state.isTeamLoading ? '' : this.renderSubmitButton()}
