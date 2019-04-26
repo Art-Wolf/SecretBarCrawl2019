@@ -10,12 +10,14 @@ import LeaveTeam from "./containers/LeaveTeam";
 import Team from "./containers/Team";
 import Teams from "./containers/Teams";
 import Rules from "./containers/Rules";
+import Challenges from "./containers/Challenges";
 
 export default () =>
   <Switch>
     <Route path="/" exact component={Home} />
     <Route path="/rules" exact component={Rules} />
     <Route path="/teams" exact component={Teams} />
+    <Route path="/challenges" exact component={Challenges} />
     <Route path="/newteam" exact component={CreateTeam} />
     <Route path="/team/:id" exact component={Team} />
     <Route path="/team/:id/join" exact component={JoinTeam} />

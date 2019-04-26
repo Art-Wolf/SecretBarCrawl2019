@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Button, FormGroup, FormControl, ControlLabel } from "react-bootstrap";
+import { PageHeader, Button, FormGroup, FormControl, ControlLabel } from "react-bootstrap";
 import "./CreateTeam.css";
 import {config} from "../config";
 import { Redirect } from 'react-router-dom'
@@ -66,6 +66,7 @@ export default class JoinTeam extends Component {
     return (
       <div className="Login">
         {this.renderRedirect()}
+        <PageHeader>Join Team</PageHeader>
         <form onSubmit={this.handleSubmit}>
           <FormGroup controlId="name" bsSize="large">
           <ControlLabel>Member Name</ControlLabel>
