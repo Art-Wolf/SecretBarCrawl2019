@@ -89,7 +89,7 @@ functions:
           cors: true
 
   createBonusPoints:
-    handler: /teams/bonusPoints/create.bonusPoints
+    handler: teams/bonusPoints/create.bonusPoints
     events:
       - http:
           path: teams/{id}/bonuspoints

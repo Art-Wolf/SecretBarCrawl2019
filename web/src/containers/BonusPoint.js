@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Button, FormGroup, FormControl, ControlLabel } from "react-bootstrap";
+import { PageHeader, Button, FormGroup, FormControl, ControlLabel } from "react-bootstrap";
 import "./CreateTeam.css";
 import {config} from "../config";
 import { Redirect } from 'react-router-dom'
@@ -19,6 +19,7 @@ export default class BonusPoint extends Component {
   }
 
   componentDidMount() {
+    this.challenge(this.props.match.params.id);
     this.team(this.props.match.params.teamId);
   }
 
@@ -34,7 +35,6 @@ export default class BonusPoint extends Component {
             console.log('Team info: ', json)
             this.setState({ team: json })
             this.setState({ isTeamLoading: false })
-            this.findScore()
         });
   }
 
@@ -111,12 +111,11 @@ export default class BonusPoint extends Component {
   renderBPDetails() {
     return (
       <div className="Login">
-        {this.renderRedirect()}
         <p>This challenge is worth <b>{this.state.challenge.points}</b>.</p>
         <p>How many points did your team earn?</p>
         <form onSubmit={this.handleSubmit}>
           <FormGroup controlId="points" bsSize="large">
-          <ControlLabel>Bet</ControlLabel>
+          <ControlLabel>Bonus Points</ControlLabel>
           <FormControl
             autoFocus
             type="points"
@@ -132,6 +131,7 @@ export default class BonusPoint extends Component {
   renderChallenge() {
     return (
       <div className="bonusPoint">
+        <PageHeader>Challenge Awards</PageHeader>
         {this.state.isChallengeLoading ? 'Loading bonus point details...' : this.renderBPDetails()}
       </div>
     );
@@ -140,6 +140,7 @@ export default class BonusPoint extends Component {
   render() {
     return (
       <div className="Login">
+        {this.renderRedirect()}
         {this.renderChallenge()}
       </div>
     );

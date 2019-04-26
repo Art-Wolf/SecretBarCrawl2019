@@ -83,13 +83,13 @@ def bonusPoints(event, context):
             "headers": {"Access-Control-Allow-Origin": "*"},
             "body": "Team not found."
         }
-    else:     
+    else:
         # Check if there are any existing scores
         if 'bonusPoints' not in result['Item']:
             logger.info("First bonusPoints on team");
             result['Item']['bonusPoints'] = 0
 
-        result['Item']['bonusPoints'] += data['bonusPoints']
+        result['Item']['bonusPoints'] += int(data['bonusPoints'])
         result['Item']['updatedAt'] = timestamp
 
         logger.info("Adding bonus points to Team: {}".format(result['Item']))
@@ -98,7 +98,7 @@ def bonusPoints(event, context):
 
         if 'scores' not in result['Item']:
             totalScore = result['Item']['bonusPoints']
-        else: 
+        else:
             for score in result['Item']['scores']:
                 totalScore += score['score'] if 'score' in score else 0
             totalScore += result['Item']['bonusPoints']
