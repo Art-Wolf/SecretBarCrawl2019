@@ -11,6 +11,7 @@ import Team from "./containers/Team";
 import Teams from "./containers/Teams";
 import Rules from "./containers/Rules";
 import Challenges from "./containers/Challenges";
+import Challenge from "./containers/Challenge";
 
 export default () =>
   <Switch>
@@ -18,6 +19,7 @@ export default () =>
     <Route path="/rules" exact component={Rules} />
     <Route path="/teams" exact component={Teams} />
     <Route path="/challenges" exact component={Challenges} />
+    <Route path="/challenges/id" exact component={Challenge} />
     <Route path="/newteam" exact component={CreateTeam} />
     <Route path="/team/:id" exact component={Team} />
     <Route path="/team/:id/join" exact component={JoinTeam} />
