@@ -90,7 +90,7 @@ export default class Challenge extends Component {
       return (
         <div>
           <PageHeader>Challenege: {this.state.challenge ? this.state.challenge.name : ''}</PageHeader>
-          <p>{this.state.challenge.description ? this.state.challenge.description : 'Loading challenge...' }</p>
+          <p>{this.state.challenge.text ? this.state.challenge.text : 'Loading challenge...' }</p>
           {this.renderTeams()}
         </div>
       );
