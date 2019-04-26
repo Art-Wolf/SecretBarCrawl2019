@@ -39,7 +39,9 @@ export default class Challenges extends Component {
               key={challenge.id}
               to={`/challenges/${challenge.id}`}
             >
-              <ListGroupItem header={challenge.name.trim().split("\n")[0]}/>
+              <ListGroupItem header={challenge.name.trim().split("\n")[0]}>
+              <p>{challenge.text.trim()}</p>
+              </ListGroupItem>
             </LinkContainer>
           : ''
     );
