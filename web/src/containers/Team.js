@@ -91,7 +91,7 @@ export default class Team extends Component {
   renderTeam() {
     return (
       <div className="team">
-        {this.state.isLoading ? 'No data to load...' : this.renderTeamDetails(this.state.team)}
+        {this.state.isLoading ? 'Loading team data...' : this.renderTeamDetails(this.state.team)}
       </div>
     );
   }
