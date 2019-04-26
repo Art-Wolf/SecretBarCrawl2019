@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import { PageHeader, ListGroup } from "react-bootstrap";
+import { PageHeader, ListGroup, ListGroupItem } from "react-bootstrap";
+import { LinkContainer } from "react-router-bootstrap";
 import "./Bar.css";
 import {config} from "../config";
 
@@ -8,12 +9,14 @@ export default class Bar extends Component {
     super(props);
     this.state = {
       isLoading: true,
-      id: props.match.params.id
+      id: props.match.params.id,
+      teams: []
     };
   }
 
   componentDidMount() {
-    this.bar(this.props.match.params.id);
+    this.bar(this.props.match.params.id)
+    this.teams()
   }
 
   async componentDidUpdate(prevProps) {
@@ -35,21 +38,59 @@ export default class Bar extends Component {
             mode: 'cors'
         })
         .then((response) => {
-            return response.json();
+            return response.json()
         })
         .then((json) => {
-            this.setState({ isLoading: false })
             console.log('Bar info: ', json)
             this.setState({ bar: json })
-            console.log('State: ', this.state)
+            this.setState({ isLoading: false })
         });
+  }
+
+  teams() {
+    fetch(config.apiUrl + "teams/", {
+            method: 'GET',
+            mode: 'cors'
+        })
+        .then((response) => {
+            return response.json()
+        })
+        .then((json) => {
+            console.log('Teams list: ', json)
+            this.setState({ teams: json })
+            this.setState({ isLoading: false })
+        });
+  }
+
+  renderTeamsList(teams) {
+    return [{}].concat(teams).map(
+      (team, i) =>
+        i !== 0
+          ? <LinkContainer
+              key={team.id}
+              to={`/bar/${this.state.id}/team/${team.id}`}
+            >
+              <ListGroupItem header={team.name.trim().split("\n")[0]}>
+              </ListGroupItem>
+            </LinkContainer>
+          : ''
+    );
+  }
+
+  renderTeams() {
+    return (
+      <div className="teams">
+        {this.state.isLoading ? 'Loading...' : this.renderTeamsList(this.state.teams)}
+      </div>
+    );
   }
 
   renderBarDetails(id) {
       return (
         <div>
           <PageHeader>Bar: {this.state.bar ? this.state.bar.name : ''}</PageHeader>
-          <p>Stuff</p>
+          <p>{this.state.bar.rule}</p>
+          {this.renderTeams()}
         </div>
       );
   }
