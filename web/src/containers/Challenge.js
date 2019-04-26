@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { PageHeader, ListGroup, ListGroupItem } from "react-bootstrap";
+import { Panel, PageHeader, ListGroup, ListGroupItem } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import "./Challenge.css";
 import {config} from "../config";
@@ -89,8 +89,15 @@ export default class Challenge extends Component {
   renderChallengeDetails() {
       return (
         <div>
-          <PageHeader>Challenege: {this.state.challenge ? this.state.challenge.name : ''}</PageHeader>
+          <PageHeader>{this.state.challenge ? this.state.challenge.name : ''}</PageHeader>
           <p>{this.state.challenge.text ? this.state.challenge.text : 'Loading challenge...' }</p>
+
+          <Panel>
+            <Panel.Body>This is worth <b>{this.state.challenge.points}</b> points.</Panel.Body>
+          </Panel>
+
+          <hr />
+          <h3>Teams</h3>
           {this.renderTeams()}
         </div>
       );

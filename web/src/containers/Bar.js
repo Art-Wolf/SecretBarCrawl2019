@@ -91,6 +91,9 @@ export default class Bar extends Component {
         <div>
           <PageHeader>Bar: {this.state.bar ? this.state.bar.name : ''}</PageHeader>
           <p>{this.state.bar.rule ? this.state.bar.rule : 'Loading rules...' }</p>
+
+          <hr />
+          <h3>Teams</h3>
           {this.renderTeams()}
         </div>
       );

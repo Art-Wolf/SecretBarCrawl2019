@@ -79,7 +79,7 @@ functions:
           path: teams/{id}/scores
           method: post
           cors: true
-  
+
   updateScore:
     handler: teams/scores/update.score
     events:
@@ -90,7 +90,7 @@ functions:
 
   createBonusPoints:
     handler: /teams/bonusPoints/create.bonusPoints
-    events: 
+    events:
       - http:
           path: teams/{id}/bonuspoints
           method: put
@@ -135,6 +135,13 @@ functions:
           method: get
           cors: true
 
+  getChallenge:
+    handler: challenges/get.challenge
+    events:
+      - http:
+          path: challenges/{id}
+          method: get
+          cors: true
 resources:
   Resources:
     TeamsDynamoDbTable:

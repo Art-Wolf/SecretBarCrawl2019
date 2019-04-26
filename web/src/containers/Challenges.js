@@ -37,7 +37,7 @@ export default class Challenges extends Component {
         i !== 0
           ? <LinkContainer
               key={challenge.id}
-              to={`/challenge/${challenge.id}`}
+              to={`/challenges/${challenge.id}`}
             >
               <ListGroupItem header={challenge.name.trim().split("\n")[0]}/>
             </LinkContainer>
