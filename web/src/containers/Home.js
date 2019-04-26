@@ -43,7 +43,7 @@ export default class Home extends Component {
             >
               <ListGroupItem
                 header={team.name.trim().split("\n")[0]}
-                bsStyle={ i == 1 ? 'warning' : ''}
+                bsStyle={ i == 1 ? team.totalScore ? 'warning': '' : ''}
                 >
                 <Badge>{team.totalScore ? team.totalScore : 0 }</Badge>
               </ListGroupItem>
