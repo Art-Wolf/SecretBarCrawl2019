@@ -192,7 +192,7 @@ export default class BarScore extends Component {
           </Button>
         </form>
 
-        { this.renderAwarded() }
+        { this.state.noScore ? '' : this.renderAwarded() }
       </div>
     );
   }
