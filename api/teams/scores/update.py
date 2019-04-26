@@ -33,7 +33,7 @@ logger.setLevel(logging.INFO)
 ##
 # Required variables
 ##
-keys = ['barId', 'bet']
+keys = ['barId', 'score']
 
 ##
 # Validate that the required variables were set
@@ -41,11 +41,11 @@ keys = ['barId', 'bet']
 def validateReq(data, keys):
     for item in keys:
         if item not in data:
-            logger.error("Couldn't create the bet, no %s." % item)
-            raise Exception("Couldn't create the bet, no %s." % item)
+            logger.error("Couldn't create the score, no %s." % item)
+            raise Exception("Couldn't create the score, no %s." % item)
 
 ##
-# Create a Member on the Team
+# Create a score on the Team
 ##
 def score(event, context):
     logger.info("Entering create score")
@@ -75,14 +75,6 @@ def score(event, context):
 
     timestamp = int(time.time() * 1000)
 
-    # The new bet
-    newScore = {
-        'id': str(uuid.uuid1()),
-        'barId': data['barId'],
-        'bet': data['bet'],
-        'createdAt': timestamp
-    }
-
     # If there was no data to get, we get back an empty string
     if not result.get("Item"):
         logger.error("Team not found.")
@@ -92,25 +84,50 @@ def score(event, context):
             "body": "Team not found."
         }
     else:
-        # Check if there are any existing scores
-        if 'scores' not in result['Item']:
-            logger.info("First score on team");
-            result['Item']['scores'] = []
+        tempScore = {}
+        found = False
+        totalScore = 0
 
-        result['Item']['scores'].append(newScore)
-        result['Item']['updatedAt'] = timestamp
+        for score in result['Item']['scores']:
+            if score['barId'] == data['barId']:
+                if score['bet'] is None:
+                    logger.error("No bet placed for this bar")
+                    response = {
+                        "statusCode": 400,
+                        "headers": {"Access-Control-Allow-Origin": "*"},
+                        "body": "No bet placed for this bar."
+                    }
+                else:
+                    tempScore = score
+                    
+                    logger.info("Calculating new score")
+                    if int(score['bet']) > int(data['score']):
+                        tempScore['score'] = int(data['score'])/2
+                    else:
+                        tempScore['score'] = score['bet']
 
+                    totalScore += int(tempScore['score'])
+                    result['Item']['scores'].remove(score)
+
+                    result['Item']['scores'].append(tempScore)
+                    result['Item']['updatedAt'] = timestamp
+                    found = True
+            else:
+                totalScore += int(score['score'])
+
+        result['Item']['totalScore'] = totalScore
         logger.info("Adding Score to Team: {}".format(result['Item']))
 
         # write the data to the database
         newItem = table.put_item(Item=result['Item'])
 
         # create a response
-        response = {
-            "statusCode": 200,
-            "headers": {"Access-Control-Allow-Origin": "*"},
-            "body": json.dumps(newItem, cls=DecimalEncoder)
-            }
+        if found:
+            response = {
+                "statusCode": 200,
+                "headers": {"Access-Control-Allow-Origin": "*"},
+                "body": json.dumps(newItem, cls=DecimalEncoder)
+                }
 
-    logger.info("Returning Response: {}".format(response));
+    logger.info("Returning Response: {}".format(response))
     return response
