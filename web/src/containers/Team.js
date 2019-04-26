@@ -72,6 +72,7 @@ export default class Team extends Component {
     return (
       <div>
         <PageHeader>Team: {team.name}</PageHeader>
+        <h3>Members</h3>
         <div className="members">
           {this.state.team.members ? this.renderTeamMembers(this.state.team.members, this.state.team.id): <LinkContainer
               key="new"
